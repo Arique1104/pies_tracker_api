@@ -1,9 +1,9 @@
 class AuthController < ApplicationController
-    skip_before_action :authorize_request, only: [:login, :signup]
+    skip_before_action :authorize_request, only: [ :login, :signup ]
 
     def signup
       user = User.new(user_params)
-      if user.save 
+      if user.save
         token = JsonWebToken.encode(user_id: user.id)
         render json: { token: token, user: user }, status: :created
       else
@@ -17,10 +17,10 @@ class AuthController < ApplicationController
             token = JsonWebToken.encode(user_id: user.id)
             render json: { token: token, user: user }
         else
-            render json: { errors: ['Invalid email or password']}, status: :unathorized
+            render json: { errors: [ "Invalid email or password" ] }, status: :unathorized
         end
     end
-    
+
     def user_params
         params.permit(:name, :email, :password, :password_confirmation, :role)
     end

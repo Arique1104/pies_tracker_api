@@ -16,11 +16,11 @@
 # end
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*'  # Replace with your frontend URL in production
+    origins "*"  # Replace with your frontend URL in production
 
-    resource '*',
+    resource "*",
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options],
-      expose: ['Authorization']
+      expose: ["Authorization"]
   end
 end

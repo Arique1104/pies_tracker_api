@@ -2,7 +2,7 @@ class AuthController < ApplicationController
     skip_before_action :authorize_request, only: [ :login, :signup ]
 
     def signup
-      user = User.new(user_params)
+      user = User.new(user_params.merge(role: :individual))
       if user.save
         token = JsonWebToken.encode(user_id: user.id)
         render json: { token: token, user: user }, status: :created
@@ -21,8 +21,8 @@ class AuthController < ApplicationController
         end
     end
 
-    private 
+    private
     def user_params
-        params.permit(:name, :email, :password, :password_confirmation, :role)
+        params.permit(:name, :email, :password, :password_confirmation)
     end
 end

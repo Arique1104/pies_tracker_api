@@ -17,7 +17,7 @@ class PiesEntriesController < ApplicationController
 
   private
 def log_unmatched_words(entry)
-  require 'set'
+  require "set"
 
   tips = pies_tip_map # You'll need to move your tip map into a service or constant
 

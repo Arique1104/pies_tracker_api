@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   get "/me", to: "users#me"
 
   resources :pies_entries, only: [:create, :index]
+  resources :unmatched_keywords, only: [:index]
+  resources :reflection_tips, only: [:index, :create, :update, :destroy]
 end

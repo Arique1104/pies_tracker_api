@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   post "/login", to: "auth#login"
 
   get "/me", to: "users#me"
+
+  resources :pies_entries, only: [:create, :index]
 end

@@ -1,5 +1,6 @@
 class ReflectionTipsController < ApplicationController
-  before_action :authorize_owner
+  before_action :authorize_owner, except: [:index]
+  before_action :authorize_owner_or_leader, only: [:index]
 
   def index
     tips = ReflectionTip.order(:category, :word)

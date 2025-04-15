@@ -12,17 +12,17 @@ class AssignmentInsightsController < ApplicationController
             }
         end
 
-        assigned_ids = TeamAssignment.pluck(individual)
+        assigned_ids = TeamAssignment.pluck(:individual_id)
 
         unassigned_individuals = User.where(role: :individual).where.not(id: assigned_ids).map do |individual|
             {
                 id: individual.id,
                 name: individual.name,
-                pies_history: last_three_enties(individual),
-                streak_score: submission_steak(individual),
+                pies_history: last_three_entries(individual),
+                streak_score: submission_streak(individual),
                 suggested_leaders: suggested_leader_matches(individual, leaders)
             }
-        end
+            end
 
         render json: { leaders: leaders, unassigned_individuals: unassigned_individuals }
     end
@@ -44,27 +44,36 @@ class AssignmentInsightsController < ApplicationController
         return default_pies unless entries.present?
 
         %i[physical intellectual emotional spiritual].index_with do |k|
-            (entries.map(&"#{k}_score".to_sym).compact.sum.to_f / entries.count).round(2)
-        end   
+            (entries.map(&k).compact.sum.to_f / entries.count).round(2)
+        end
     end
     
-
-    def last_three_entries(user)
-        user.pies_entries.order(checked_in_on: :desc).limit(3).map do |entry|
-            {
-                checked_in_on: entry.checked_in_on,
-                physical: entry.physical_score,
-                intellectual: entry.intellectual_score,
-                emotional: entry.emotional_score,
-                spiritual: entry.spiritual_score
-            }
-    
+    def leader_assigned_individuals(leader)
+        leader.assigned_users.map do |ind|
+        {
+            id: ind.id,
+            name: ind.name,
+            pies_history: last_three_entries(ind),
+            streak_score: submission_streak(ind)
+        }
         end
     end
 
-    def submission_steak(user)
+    def last_three_entries(user)
+    user.pies_entries.order(checked_in_on: :desc).limit(3).map do |entry|
+            {
+            checked_in_on: entry.checked_in_on,
+            physical: entry.physical,
+            intellectual: entry.intellectual,
+            emotional: entry.emotional,
+            spiritual: entry.spiritual
+            }
+        end
+    end
+
+    def submission_streak(user)
         last_week = 6.days.ago.to_date..Date.today
-        user.pies_entries.where(checked_in_on: last_week)
+        user.pies_entries.where(checked_in_on: last_week).count
     end
     
 
@@ -79,26 +88,28 @@ class AssignmentInsightsController < ApplicationController
 
     def suggested_leader_matches(individual, leader_data)
         recent = last_three_entries(individual)
-        return [] unless recent.any?
+        return [] if recent.empty?
 
         avg_needs = %i[physical intellectual emotional spiritual].index_with do |k|
-            (recent.map {|entry| entry[k] }.compact.sum.to_f / recent.count).round(2)
+            values = recent.map { |e| e[k] }.compact
+            values.empty? ? 0 : (values.sum.to_f / values.size).round(2)
         end
 
         leader_data.map do |leader|
             next if leader[:open_slots] <= 0
-            alignment = %i[physical intellectual emotional spiritual].map do |k|
-                {k: k, diff: (leader[:pies_averages][k] - avg_needs[k]).round(2) }
-            end
+
+                alignment = %i[physical intellectual emotional spiritual].map do |k|
+                    { k: k, diff: (leader[:pies_averages][k] - avg_needs[k]).round(2) }
+                end
 
             top_gap = alignment.max_by { |d| d[:diff].abs }
-            {
-                id: leader[:id],
-                name: leader[:name],
-                open_slots: leader[:open_slots],
-                match_reason: "Leader reflects high #{top_gap[:k].to_s.capitalize} scores while Individual shows lower scores in that area"
 
+            {
+            id: leader[:id],
+            name: leader[:name],
+            open_slots: leader[:open_slots],
+            match_reason: "Leader reflects high #{top_gap[:k].to_s.capitalize} scores while Individual shows lower scores in that area."
             }
-        end.compact.sort_by { |s| s[:open_slots] * -1 } # prioritize availability
+        end.compact.sort_by { |s| s[:open_slots] * -1 }
     end
 end

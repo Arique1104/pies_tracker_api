@@ -16,7 +16,8 @@ class PiesEntriesController < ApplicationController
   end
 
   private
-def log_unmatched_words(entry)
+
+  def log_unmatched_words(entry)
   require "set"
 
   tips = pies_tip_map # You'll need to move your tip map into a service or constant
@@ -31,7 +32,9 @@ def log_unmatched_words(entry)
     unmatched = words.reject { |w| matched_words.include?(w) }
 
     unmatched.each do |word|
-      record = UnmatchedKeyword.find_or_initialize_by(word: word, category: category)
+      cleaned = word.downcase.strip
+    return if STOP_WORDS.include?(cleaned)
+      record = UnmatchedKeyword.find_or_initialize_by(word: cleaned, category: category)
       record.count ||= 0
       record.count += 1
       record.example = desc

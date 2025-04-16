@@ -5,8 +5,9 @@ puts "🌱 Seeding data..."
 TeamAssignment.destroy_all
 PiesEntry.destroy_all
 ReflectionTip.destroy_all
-User.destroy_all
 UnmatchedKeyword.destroy_all
+User.destroy_all
+
 # Helper to generate random scores and descriptions
 def random_score
   rand(1..10)
@@ -102,94 +103,5 @@ categories = %w[physical intellectual emotional spiritual]
   )
 end
 
-#create 10 Unmatched Keywords
-UnmatchedKeyword.create!(
-  word: "groggy",
-  category: "physical",
-  count: 7,
-  example: "Eat onto official still investment put yourself something friend.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
 
-UnmatchedKeyword.create!(
-  word: "scatterbrained",
-  category: "intellectual",
-  count: 8,
-  example: "Price blue raise throughout prepare detail care it born six.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "wistful",
-  category: "emotional",
-  count: 10,
-  example: "Environmental four crime list experience drug subject daughter soon stage lose.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "spaced",
-  category: "spiritual",
-  count: 1,
-  example: "Collection write four apply pay which tend when lawyer.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "overwhelmed",
-  category: "emotional",
-  count: 1,
-  example: "Teach back military people only day then quickly.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "energized",
-  category: "physical",
-  count: 9,
-  example: "Relationship type stay from skin shoulder exist.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "zoned",
-  category: "spiritual",
-  count: 3,
-  example: "Economic surface me something born same myself recently.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "numb",
-  category: "emotional",
-  count: 8,
-  example: "Land evening feel up present whole ask deal from stock modern.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "restless",
-  category: "physical",
-  count: 9,
-  example: "Beyond in quite as election body baby fund discussion value chair whatever human.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-
-UnmatchedKeyword.create!(
-  word: "uncertain",
-  category: "intellectual",
-  count: 1,
-  example: "Here for whose daughter site us peace property.",
-  created_at: Time.now,
-  updated_at: Time.now
-)
 puts "✅ Done seeding!"

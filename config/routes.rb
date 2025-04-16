@@ -20,4 +20,6 @@ Rails.application.routes.draw do
   resources :pies_entries, only: [ :create, :index ]
   resources :unmatched_keywords, only: [ :index, :destroy ]
   resources :reflection_tips, only: [ :index, :create, :update, :destroy ]
+  resources :dismissed_keywords, only: [:create]
+  
 end

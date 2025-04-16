@@ -18,6 +18,6 @@ Rails.application.routes.draw do
   get '/leader_team_insights', to: 'leader_team_insights#index'
   resources :team_assignments, only: [:create, :destroy]
   resources :pies_entries, only: [ :create, :index ]
-  resources :unmatched_keywords, only: [ :index ]
+  resources :unmatched_keywords, only: [ :index, :destroy ]
   resources :reflection_tips, only: [ :index, :create, :update, :destroy ]
 end

@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_12_201146) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_16_195744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "dismissed_keywords", force: :cascade do |t|
+    t.string "word"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["word"], name: "index_dismissed_keywords_on_word", unique: true
+  end
 
   create_table "pies_entries", force: :cascade do |t|
     t.bigint "user_id", null: false

@@ -1,0 +1,2 @@
+class DismissedKeyword < ApplicationRecord
+end

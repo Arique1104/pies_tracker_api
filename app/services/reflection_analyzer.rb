@@ -16,8 +16,8 @@ class ReflectionAnalyzer
       words.each do |word|
         next if ReflectionTip.exists?(word: word)
 
-        cleaned = word.strip
-        next if ReflectionAnalyzer::STOP_WORDS.include?(cleaned)
+        cleaned = word.strip.downcase
+        next if DismissedKeyword.exists?(word: cleaned)
 
         UnmatchedKeyword.find_or_initialize_by(word: cleaned).tap do |kw|
           kw.category ||= detect_category(text)

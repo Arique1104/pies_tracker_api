@@ -31,7 +31,7 @@ class AssignmentInsightsController < ApplicationController
 
     def authorize_owner
         unless @current_user.role == "owner"
-            render json: {error: "Unauthorized", status: :unathorized}
+            render json: { error: "Unauthorized", status: :unathorized }
         end
     end
 
@@ -47,7 +47,7 @@ class AssignmentInsightsController < ApplicationController
             (entries.map(&k).compact.sum.to_f / entries.count).round(2)
         end
     end
-    
+
     def leader_assigned_individuals(leader)
         leader.assigned_users.map do |ind|
         {
@@ -75,7 +75,7 @@ class AssignmentInsightsController < ApplicationController
         last_week = 6.days.ago.to_date..Date.today
         user.pies_entries.where(checked_in_on: last_week).count
     end
-    
+
 
     def default_pies
         {

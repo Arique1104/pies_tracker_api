@@ -18,7 +18,7 @@ class TeamsController < ApplicationController
   private
 
   def authorize_owner
-    render json: { error: 'Unauthorized' }, status: :unauthorized unless @current_user&.role == 'owner'
+    render json: { error: "Unauthorized" }, status: :unauthorized unless @current_user&.role == "owner"
   end
 
   def leader_average_pies(leader)

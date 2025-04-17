@@ -22,7 +22,7 @@ class LeaderTeamInsightsController < ApplicationController
   private
 
   def authorize_leader
-    render json: { error: 'Unauthorized' }, status: :unauthorized unless @current_user&.role == 'leader'
+    render json: { error: "Unauthorized" }, status: :unauthorized unless @current_user&.role == "leader"
   end
 
   def average_team_pies(users)

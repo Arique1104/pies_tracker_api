@@ -14,7 +14,7 @@ def random_score
 end
 
 def random_description
-  ["Feeling reflective", "Need more rest", "High energy day", "A bit off today", "Focused and calm"].sample
+  [ "Feeling reflective", "Need more rest", "High energy day", "A bit off today", "Focused and calm" ].sample
 end
 
 def random_date(days_ago)

@@ -4,10 +4,10 @@ class ApplicationController < ActionController::API
   attr_reader :current_user
 
   private
-    
+
   def authorize_owner_or_leader
-    unless ['owner', 'leader'].include?(@current_user&.role)
-      render json: { error: 'Unauthorized' }, status: :unauthorized
+    unless [ "owner", "leader" ].include?(@current_user&.role)
+      render json: { error: "Unauthorized" }, status: :unauthorized
     end
   end
 

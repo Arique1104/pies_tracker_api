@@ -12,5 +12,4 @@ class PiesEntry < ApplicationRecord
   def process_reflection_keywords
     ReflectionAnalyzer.new(self).process_keywords
   end
-
 end

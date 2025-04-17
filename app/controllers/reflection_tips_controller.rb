@@ -1,6 +1,7 @@
 class ReflectionTipsController < ApplicationController
   before_action :authorize_owner, except: [ :index ]
   before_action :authorize_owner_or_leader, only: [ :index ]
+  before_action :authorize_request, only: [ :pies_tip_map ]
 
   def index
     tips = ReflectionTip.order(:category, :word)
@@ -29,6 +30,17 @@ class ReflectionTipsController < ApplicationController
     tip = ReflectionTip.find(params[:id])
     tip.destroy
     head :no_content
+  end
+
+  def pies_tip_map
+    if tips.empty?
+      render json: {}
+    else
+      grouped = tips.group_by(&:category)
+                    .transform_values { |group| group.map(&:word).uniq }
+
+      render json: grouped
+    end
   end
 
   private

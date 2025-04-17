@@ -16,14 +16,30 @@ class AuthController < ApplicationController
       end
     end
 
+def update
+  user = User.find_by(reset_password_token: params[:token])
+
+  if user&.password_reset_token_valid?
+    user.update!(password: params[:password])
+    user.clear_password_reset_token!
+
+    token = encode_token({ user_id: user.id }) # <- your existing JWT/session method
+    render json: { token: token, user: user }, status: :ok
+  else
+    render json: { error: "Invalid or expired token." }, status: :unauthorized
+  end
+end
+
     def login
-        user = User.find_by(email: params[:email])
-        if user.authenticate(params[:password])
-            token = JsonWebToken.encode(user_id: user.id)
-            render json: { token: token, user: user }
-        else
-            render json: { errors: [ "Invalid email or password" ] }, status: :unathorized
-        end
+      credentials = params[:auth] || params # support both formats
+      user = User.find_by(email: credentials[:email])
+
+      if user&.authenticate(credentials[:password])
+        token = encode_token({ user_id: user.id })
+        render json: { token: token, user: user }, status: :ok
+      else
+        render json: { error: "Invalid email or password" }, status: :unauthorized
+      end
     end
 
     private

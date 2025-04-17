@@ -16,6 +16,13 @@ Rails.application.routes.draw do
   get "/teams", to: "teams#index"
   get "/team_assignments/find_by_pair", to: "team_assignments#find_by_pair"
   get "/leader_team_insights", to: "leader_team_insights#index"
+
+  post   "/password_resets",      to: "password_resets#create" # email submit
+  get    "/password_resets/edit", to: "password_resets#edit"   # verify token
+  patch  "/password_resets",      to: "password_resets#update" # set new password
+
+  get "/reflection_tips/pies_tip_map", to: "reflection_tips#pies_tip_map"
+
   resources :team_assignments, only: [ :create, :destroy ]
   resources :pies_entries, only: [ :create, :index ]
   resources :unmatched_keywords, only: [ :index, :destroy ]

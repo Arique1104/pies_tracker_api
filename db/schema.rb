@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_10_182336) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_16_195744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "dismissed_keywords", force: :cascade do |t|
+    t.string "word"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["word"], name: "index_dismissed_keywords_on_word", unique: true
+  end
 
   create_table "pies_entries", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -30,6 +37,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_182336) do
     t.index ["user_id"], name: "index_pies_entries_on_user_id"
   end
 
+  create_table "reflection_tips", force: :cascade do |t|
+    t.string "word"
+    t.string "category"
+    t.text "tip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "team_assignments", force: :cascade do |t|
     t.bigint "leader_id", null: false
     t.bigint "individual_id", null: false
@@ -37,6 +52,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_182336) do
     t.datetime "updated_at", null: false
     t.index ["individual_id"], name: "index_team_assignments_on_individual_id"
     t.index ["leader_id"], name: "index_team_assignments_on_leader_id"
+  end
+
+  create_table "unmatched_keywords", force: :cascade do |t|
+    t.string "word"
+    t.string "category"
+    t.integer "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "example"
   end
 
   create_table "users", force: :cascade do |t|

@@ -4,7 +4,7 @@ class AuthController < ApplicationController
     def signup
       requested_role = params[:role]
       allowed_roles = User.roles.keys
-      role = allowed_roles.include?(requested_role) ? requested_role : 'individual'
+      role = allowed_roles.include?(requested_role) ? requested_role : "individual"
 
       user = User.new(user_params.merge(role: role))
       if user.save

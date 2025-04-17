@@ -11,4 +11,14 @@ Rails.application.routes.draw do
   post "/login", to: "auth#login"
 
   get "/me", to: "users#me"
+  get "/assignment_insights", to: "assignment_insights#index"
+
+  get "/teams", to: "teams#index"
+  get "/team_assignments/find_by_pair", to: "team_assignments#find_by_pair"
+  get "/leader_team_insights", to: "leader_team_insights#index"
+  resources :team_assignments, only: [ :create, :destroy ]
+  resources :pies_entries, only: [ :create, :index ]
+  resources :unmatched_keywords, only: [ :index, :destroy ]
+  resources :reflection_tips, only: [ :index, :create, :update, :destroy ]
+  resources :dismissed_keywords, only: [ :create ]
 end

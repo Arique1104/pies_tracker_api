@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authorize_request
-  before_action :authorize_owner_or_leader, only: [:create, :update]
+  before_action :authorize_owner_or_leader, only: [ :create, :update ]
 
   def index
     render json: Event.includes(:hosts).order(date: :asc), status: :ok

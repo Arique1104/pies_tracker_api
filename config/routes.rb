@@ -28,5 +28,5 @@ Rails.application.routes.draw do
   resources :unmatched_keywords, only: [ :index, :destroy ]
   resources :reflection_tips, only: [ :index, :create, :update, :destroy ]
   resources :dismissed_keywords, only: [ :create ]
-  resources :events, only: [:index, :create, :update, :show]
+  resources :events, only: [ :index, :create, :update, :show ]
 end

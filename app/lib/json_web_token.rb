@@ -1,3 +1,4 @@
+require 'jwt'
 class JsonWebToken
   SECRET_KEY = Rails.application.secret_key_base
 
@@ -5,11 +6,18 @@ class JsonWebToken
     payload[:exp] = exp.to_i
     JWT.encode(payload, SECRET_KEY)
   end
-
+  
   def self.decode(token)
-    decoded = JWT.decode(token, SECRET_KEY)[0]
-    HashWithIndifferentAccess.new(decoded)
-  rescue JWT::DecodeError
+    JWT.decode(token, SECRET_KEY)[0]
+  rescue JWT::DecodeError => e
+    Rails.logger.error("JWT Decode failed: #{e.message}")
     nil
   end
+  # def self.decode(token)
+  #   decoded = JWT.decode(token, SECRET_KEY)[0]
+  #   HashWithIndifferentAccess.new(decoded)
+  # rescue JWT::DecodeError
+  #   Rails.logger.error("JWT Decode failed: #{e.message}")
+  #   nil
+  # end
 end

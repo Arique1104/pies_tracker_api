@@ -13,14 +13,17 @@ class ApplicationController < ActionController::API
 
   def authorize_request
     header = request.headers["Authorization"]
+    puts "🪵 Raw header: #{request.headers['Authorization']}"
     header = header.split.last if header
     decoded = JsonWebToken.decode(header)
+    puts "🧩 Decoded: #{decoded.inspect}" # after decoding
     @current_user = User.find(decoded[:user_id]) if decoded
+    puts "👤 Current user: #{@current_user&.email}"
   rescue ActiveRecord::RecordNotFound
     render json: { errors: [ "Invalid token" ] }, status: :unauthorized
   end
 
   def encode_token(payload)
-    JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    JWT.encode(payload, Rails.application.credentials.jwt_secret)
   end
 end

@@ -10,7 +10,11 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true
 
-    def generate_password_reset_token!
+  has_many :created_events, class_name: "Event", foreign_key: "created_by_id"
+  has_many :event_hosts
+  has_many :hosted_events, through: :event_hosts, source: :event
+
+  def generate_password_reset_token!
     self.reset_password_token = SecureRandom.urlsafe_base64(32)
     self.reset_password_sent_at = Time.current
     save!

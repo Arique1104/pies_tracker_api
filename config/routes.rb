@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   # root "posts#index"
   post "/signup", to: "auth#signup"
   post "/login", to: "auth#login"
-
+  
+  get '/memberships/me', to: 'memberships#me'
   get "/me", to: "users#me"
   get "/assignment_insights", to: "assignment_insights#index"
 
@@ -22,7 +23,8 @@ Rails.application.routes.draw do
   patch  "/password_resets",      to: "password_resets#update" # set new password
 
   get "/reflection_tips/pies_tip_map", to: "reflection_tips#pies_tip_map"
-
+  get '/events/:id/host_check', to: 'events#host_check'
+  
   resources :team_assignments, only: [ :create, :destroy ]
   resources :pies_entries, only: [ :create, :index ]
   resources :unmatched_keywords, only: [ :index, :destroy ]

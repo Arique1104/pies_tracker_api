@@ -37,7 +37,13 @@ class EventsController < ApplicationController
     event = Event.includes(:hosts).find(params[:id])
     render json: event, status: :ok
   end
-
+  
+  def host_check
+    event = Event.find(params[:id])
+    is_host = event.hosts.exists?(@current_user.id)
+    render json: { is_host: is_host }
+  end
+  
   private
 
   def event_params

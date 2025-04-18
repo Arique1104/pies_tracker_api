@@ -1,5 +1,8 @@
 class PiesEntriesController < ApplicationController
+  before_action :authorize_request
+  
   def create
+    puts "Current user: #{@current_user.inspect}"
     entry = @current_user.pies_entries.new(pies_entry_params)
 
     if entry.save

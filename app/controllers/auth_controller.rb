@@ -1,20 +1,16 @@
 class AuthController < ApplicationController
     skip_before_action :authorize_request, only: [ :login, :signup ]
 
-    def signup
-      requested_role = params[:role]
-      allowed_roles = User.roles.keys
-      role = allowed_roles.include?(requested_role) ? requested_role : "individual"
-
-      user = User.new(user_params.merge(role: role))
-      if user.save
-        token = JsonWebToken.encode(user_id: user.id)
-        render json: { token: token, user: user }, status: :created
-      else
-        puts "Signup error: #{user.errors.full_messages}"
-        render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
-      end
+  def signup
+    params.delete(:auth)
+    user = User.new(signup_params)
+    if user.save
+      token = encode_token({ user_id: user.id })
+      render json: { user: user, token: token }, status: :created
+    else
+      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
     end
+  end
 
 def update
   user = User.find_by(reset_password_token: params[:token])
@@ -46,4 +42,8 @@ end
     def user_params
         params.permit(:name, :email, :password, :password_confirmation)
     end
+
+      def signup_params
+        params.permit(:name, :email, :password, :password_confirmation)
+      end 
 end

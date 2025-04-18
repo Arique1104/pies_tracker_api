@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   get "/reflection_tips/pies_tip_map", to: "reflection_tips#pies_tip_map"
   get '/events/:id/host_check', to: 'events#host_check'
   
+  post '/memberships/invite', to: 'memberships#invite'
+  
+  resources :memberships, only: [ :update, :index ]
   resources :team_assignments, only: [ :create, :destroy ]
   resources :pies_entries, only: [ :create, :index ]
   resources :unmatched_keywords, only: [ :index, :destroy ]

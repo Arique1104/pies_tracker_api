@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_18_004322) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_18_004512) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -38,6 +38,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_004322) do
     t.integer "created_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "organization_id", null: false
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_memberships_on_organization_id"
+    t.index ["user_id", "organization_id"], name: "index_memberships_on_user_id_and_organization_id", unique: true
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -102,6 +113,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_18_004322) do
 
   add_foreign_key "event_hosts", "events"
   add_foreign_key "event_hosts", "users"
+  add_foreign_key "memberships", "organizations"
+  add_foreign_key "memberships", "users"
   add_foreign_key "pies_entries", "users"
   add_foreign_key "team_assignments", "users", column: "individual_id"
   add_foreign_key "team_assignments", "users", column: "leader_id"

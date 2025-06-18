@@ -56,4 +56,4 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
-gem "rubocop", "~> 1.75", groups: [ :development, :test ]
+gem "rubocop", "~> 1.76", groups: [ :development, :test ]
